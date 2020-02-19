@@ -77,6 +77,11 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
         dismiss(animated: true, completion: nil)
     }
     
+    @IBAction func onTapBackground(_ sender: Any) {
+        view.endEditing(true)
+    }
+    
+    
     /*
     // MARK: - Navigation
 

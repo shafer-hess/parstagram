@@ -198,6 +198,7 @@
                             </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="fAQ-Dz-HbB" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="mh5-9t-KUf" secondAttribute="trailing" symbolic="YES" id="1sF-Pd-Jt3"/>
                             <constraint firstItem="mh5-9t-KUf" firstAttribute="leading" secondItem="fAQ-Dz-HbB" secondAttribute="leading" constant="16" id="4If-93-XOt"/>
@@ -209,6 +210,9 @@
                             <constraint firstItem="fAQ-Dz-HbB" firstAttribute="trailing" secondItem="AoJ-uY-Rlq" secondAttribute="trailing" constant="16" id="vLI-do-fCZ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="fAQ-Dz-HbB"/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="O9S-Ib-bzF" appends="YES" id="QQa-4C-Ssh"/>
+                        </connections>
                     </view>
                     <connections>
                         <outlet property="commentField" destination="AoJ-uY-Rlq" id="qCy-d9-vvJ"/>
@@ -219,6 +223,11 @@
                 <tapGestureRecognizer id="LSF-c6-vRA">
                     <connections>
                         <action selector="onCameraButton:" destination="LUq-8W-Wsu" id="V9W-tp-JMU"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="O9S-Ib-bzF">
+                    <connections>
+                        <action selector="onTapBackground:" destination="LUq-8W-Wsu" id="Ubr-VT-VtT"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
