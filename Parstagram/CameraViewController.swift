@@ -40,12 +40,18 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        // Retrieve selected image from camera
         let image = info[.editedImage] as! UIImage
         
+        // Scale Image to reduce size for database
         let size = CGSize(width: 300, height: 300)
         let scaledImage = image.af_imageScaled(to: size)
         
         imageView.image = scaledImage
+        
+        // Resize ImageView to match 300x300 image
+        imageView.frame = CGRect(x: imageView.frame.midX - imageView.frame.height / 2, y: imageView.frame.midY - imageView.frame.height / 2, width: imageView.frame.height, height: imageView.frame.height)
+        
         dismiss(animated: true, completion: nil)
     }
     
