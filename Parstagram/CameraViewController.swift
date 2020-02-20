@@ -15,6 +15,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     // CameraViewController Outlets
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var commentField: UITextField!
+    @IBOutlet weak var submitButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +24,10 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     @IBAction func onSubmit(_ sender: Any) {
+        
+        // Disable submit button
+        submitButton.isEnabled = false
+        
         // Create Parse Post Object
         let post = PFObject(className: "Posts")
         
@@ -32,7 +37,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
         
         // Retrieve Image Data and Save it to Post Column
         let imageData = imageView.image!.pngData()
-        let file = PFFileObject(data: imageData!)
+        let file = PFFileObject(name: "image.png", data: imageData!)
         post["image"] = file
         
         // Save Post to Parse Database
@@ -42,6 +47,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
                 self.dismiss(animated: true, completion: nil)
                 
             } else {
+                self.submitButton.isEnabled = true
                 print("Error uploading post: \(error?.localizedDescription ?? "Error Uploading")")
             }
         }
@@ -80,7 +86,6 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     @IBAction func onTapBackground(_ sender: Any) {
         view.endEditing(true)
     }
-    
     
     /*
     // MARK: - Navigation

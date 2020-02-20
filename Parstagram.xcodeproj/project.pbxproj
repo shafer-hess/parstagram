@@ -17,6 +17,7 @@
 		CFD88A7623FB526A009F076E /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD88A7523FB526A009F076E /* FeedViewController.swift */; };
 		CFD88A7823FB5277009F076E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD88A7723FB5277009F076E /* LoginViewController.swift */; };
 		CFD88A7A23FB622C009F076E /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD88A7923FB622C009F076E /* CameraViewController.swift */; };
+		CFDE4F8523FDEDA70060D036 /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFDE4F8423FDEDA70060D036 /* PostCell.swift */; };
 		F2885019D756CE7D6D2AD232 /* Pods_Parstagram.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42CB507BA4DD7031B62328E3 /* Pods_Parstagram.framework */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +51,7 @@
 		CFD88A7523FB526A009F076E /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		CFD88A7723FB5277009F076E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		CFD88A7923FB622C009F076E /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
+		CFDE4F8423FDEDA70060D036 /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +124,7 @@
 				CFD88A5E23FADD81009F076E /* LaunchScreen.storyboard */,
 				CFD88A6123FADD81009F076E /* Info.plist */,
 				CFD88A7523FB526A009F076E /* FeedViewController.swift */,
+				CFDE4F8423FDEDA70060D036 /* PostCell.swift */,
 				CFD88A7723FB5277009F076E /* LoginViewController.swift */,
 				CFD88A7923FB622C009F076E /* CameraViewController.swift */,
 			);
@@ -310,6 +313,7 @@
 				CFD88A7623FB526A009F076E /* FeedViewController.swift in Sources */,
 				CFD88A7823FB5277009F076E /* LoginViewController.swift in Sources */,
 				CFD88A5623FADD7E009F076E /* SceneDelegate.swift in Sources */,
+				CFDE4F8523FDEDA70060D036 /* PostCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
