@@ -58,6 +58,8 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.commentLabel.text = post["caption"] as? String
         cell.postView.af_setImage(withURL: url)
         
+        cell.objectId = post["objectId"] as! String
+        
         return cell
     }
     

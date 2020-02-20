@@ -6,6 +6,7 @@
 //  Copyright © 2020 Shafer Hess. All rights reserved.
 //
 
+import Parse
 import UIKit
 
 class PostCell: UITableViewCell {
@@ -13,8 +14,10 @@ class PostCell: UITableViewCell {
     // Cell Outlets
     @IBOutlet weak var authorLabel: UILabel!
     @IBOutlet weak var commentLabel: UILabel!
-    
+
     @IBOutlet weak var postView: UIImageView!
+    
+    var objectId: String = ""
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -26,5 +29,15 @@ class PostCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-
+    
+    @IBAction func onDelete(_ sender: Any) {
+        let query = PFQuery(className: "Posts")
+        query.whereKey("objectId", equalTo: self.objectId)
+        
+        query.findObjectsInBackground { (posts: [PFObject]?, error) in
+            for post in posts! {
+                post.deleteEventually()
+            }
+        }
+    }
 }
