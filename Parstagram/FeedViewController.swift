@@ -20,6 +20,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     let myRefreshController = UIRefreshControl()
     var posts = [PFObject]()
+    var numPosts: Int = 5
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,7 +51,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         let query = PFQuery(className: "Posts")
         query.includeKey("author")
         query.order(byDescending: "createdAt")
-        query.limit = 20
+        query.limit = numPosts
         
         query.findObjectsInBackground { (posts, error) in
             if(posts != nil) {
@@ -59,6 +60,11 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
                 self.myRefreshController.endRefreshing()
             }
         }
+    }
+    
+    func getMorePosts() {
+        numPosts += 10
+        getPosts()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -89,6 +95,12 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if(indexPath.row + 1 == numPosts) {
+            getMorePosts()
+        }
     }
     
     @IBAction func onLogout(_ sender: Any) {
