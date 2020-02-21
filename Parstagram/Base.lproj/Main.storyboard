@@ -336,7 +336,7 @@
             </objects>
             <point key="canvasLocation" x="3898" y="-274"/>
         </scene>
-        <!--Item 2-->
+        <!--View Controller-->
         <scene sceneID="gu6-zy-A5y">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VAR-p0-5Wx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -347,10 +347,10 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="udt-8y-109"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item 2" id="Vmh-ht-qnA"/>
+                    <navigationItem key="navigationItem" id="S3z-HQ-nag"/>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="2103" y="587"/>
+            <point key="canvasLocation" x="3044" y="586.69950738916259"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="zMT-Jk-pgt">
@@ -364,17 +364,17 @@
                     </tabBar>
                     <connections>
                         <segue destination="xUR-IX-7hK" kind="relationship" relationship="viewControllers" id="tOH-08-G2u"/>
-                        <segue destination="FAg-3B-Sfd" kind="relationship" relationship="viewControllers" id="HnO-Y4-Igy"/>
+                        <segue destination="RN4-fN-7CD" kind="relationship" relationship="viewControllers" id="HnO-Y4-Igy"/>
                     </connections>
                 </tabBarController>
             </objects>
             <point key="canvasLocation" x="1084" y="129"/>
         </scene>
-        <!--Item-->
+        <!--Feed-->
         <scene sceneID="xvr-yq-3lA">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" modalPresentationStyle="fullScreen" id="xUR-IX-7hK" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="PVH-I5-ags"/>
+                    <tabBarItem key="tabBarItem" title="Feed" image="feed_tab" id="PVH-I5-ags"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="dP2-Kr-MXJ">
                         <rect key="frame" x="0.0" y="44" width="375" height="96"/>
@@ -389,10 +389,31 @@
             </objects>
             <point key="canvasLocation" x="2103" y="-274"/>
         </scene>
+        <!--My Profile-->
+        <scene sceneID="x7D-6o-LDD">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="RN4-fN-7CD" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="My Profile" image="profile_tab" id="Vmh-ht-qnA"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="EJa-Eu-Do9">
+                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="FAg-3B-Sfd" kind="relationship" relationship="rootViewController" id="nap-lj-O0u"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JwJ-XG-BoV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2101.5999999999999" y="586.69950738916259"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="feed_tab" width="25" height="25"/>
         <image name="image_placeholder" width="375" height="375"/>
         <image name="insta_camera_btn" width="25" height="25"/>
+        <image name="profile_tab" width="25" height="25"/>
         <image name="submit-btn" width="25" height="25"/>
         <image name="trash" catalog="system" width="60" height="64"/>
     </resources>
