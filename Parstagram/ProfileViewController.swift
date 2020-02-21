@@ -6,18 +6,22 @@
 //  Copyright © 2020 Shafer Hess. All rights reserved.
 //
 
+import AlamofireImage
 import Parse
 import UIKit
 
-class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, DeleteDelegate {
+class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,UIImagePickerControllerDelegate, UINavigationControllerDelegate, DeleteDelegate {
+    
     // ProfileViewController Outlets
     @IBOutlet weak var tableView: UITableView!
-        
+    @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet weak var profileView: UIImageView!
+    
     var posts = [PFObject]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         tableView.allowsSelection = false
         tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         
@@ -27,8 +31,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         tableView.delegate = self
         tableView.dataSource = self
         
+        // Replace with label and Profile Picture URL
         if(PFUser.current() != nil) {
-            self.navigationItem.title = PFUser.current()?.username
+            usernameLabel.text = PFUser.current()!.username
         }
         
         getUserPosts()
@@ -113,6 +118,33 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         postDelete.addAction(confirmButton)
         
         present(postDelete, animated: true)
+    }
+    
+    @IBAction func onProfileTap(_ sender: Any) {
+        let pickerController = UIImagePickerController()
+        
+        pickerController.delegate = self
+        pickerController.allowsEditing = true
+        
+        pickerController.sourceType = .photoLibrary
+        
+        present(pickerController, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        let image = info[.editedImage] as! UIImage
+        
+        let size = CGSize(width: 300, height: 300)
+        let scaledImage = image.af_imageScaled(to: size)
+        
+        profileView.image = scaledImage
+        
+        // TODO
+        // Upload Image to Parse
+        
+        dismiss(animated: true, completion: nil)
+        
     }
     
     /*

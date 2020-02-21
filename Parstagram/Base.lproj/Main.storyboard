@@ -349,9 +349,51 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <view key="tableHeaderView" contentMode="scaleToFill" id="Bmu-6Z-p4a">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="111"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hhG-rf-9ic">
+                                            <rect key="frame" x="88" y="23" width="70.333333333333314" height="64"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="64" id="Yst-AN-fqR"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="32"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.crop.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Stz-BS-Bto">
+                                            <rect key="frame" x="8" y="24" width="64" height="62.666666666666671"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <gestureRecognizers/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="64" id="FUt-Dn-eYr"/>
+                                                <constraint firstAttribute="height" constant="64" id="be3-Da-BhJ"/>
+                                            </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                    <integer key="value" value="32"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                            <connections>
+                                                <outletCollection property="gestureRecognizers" destination="Ojo-Ds-ckp" appends="YES" id="crv-J1-hY4"/>
+                                            </connections>
+                                        </imageView>
+                                    </subviews>
+                                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                    <constraints>
+                                        <constraint firstItem="hhG-rf-9ic" firstAttribute="leading" secondItem="Stz-BS-Bto" secondAttribute="trailing" constant="16" id="5rD-lc-sYc"/>
+                                        <constraint firstItem="hhG-rf-9ic" firstAttribute="top" secondItem="Bmu-6Z-p4a" secondAttribute="top" constant="23" id="H10-07-psi"/>
+                                        <constraint firstItem="Stz-BS-Bto" firstAttribute="top" secondItem="Bmu-6Z-p4a" secondAttribute="top" constant="23" id="XaR-fe-SeG"/>
+                                        <constraint firstAttribute="bottom" secondItem="hhG-rf-9ic" secondAttribute="bottom" constant="24" id="g4u-Gv-gfM"/>
+                                        <constraint firstItem="Stz-BS-Bto" firstAttribute="leading" secondItem="Bmu-6Z-p4a" secondAttribute="leading" constant="8" id="ipL-tt-hZR"/>
+                                        <constraint firstAttribute="bottom" secondItem="Stz-BS-Bto" secondAttribute="bottom" constant="24" id="xAi-ON-Omv"/>
+                                    </constraints>
+                                </view>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="PostCell" rowHeight="500" id="gtm-Sc-SSh" customClass="PostCell" customModule="Parstagram" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="500"/>
+                                        <rect key="frame" x="0.0" y="139" width="375" height="500"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gtm-Sc-SSh" id="ITs-PB-bSb">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="500"/>
@@ -422,9 +464,16 @@
                     </view>
                     <navigationItem key="navigationItem" id="S3z-HQ-nag"/>
                     <connections>
+                        <outlet property="profileView" destination="Stz-BS-Bto" id="qfZ-h7-3uC"/>
                         <outlet property="tableView" destination="E4A-Rl-rYK" id="qyR-gZ-vVp"/>
+                        <outlet property="usernameLabel" destination="hhG-rf-9ic" id="0n7-ky-6le"/>
                     </connections>
                 </viewController>
+                <tapGestureRecognizer id="Ojo-Ds-ckp">
+                    <connections>
+                        <action selector="onProfileTap:" destination="FAg-3B-Sfd" id="RD4-Qv-PZh"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="3044" y="586.69950738916259"/>
         </scene>
@@ -471,8 +520,8 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="RN4-fN-7CD" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="My Profile" image="profile_tab" id="Vmh-ht-qnA"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="EJa-Eu-Do9">
-                        <rect key="frame" x="0.0" y="44" width="375" height="96"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="EJa-Eu-Do9">
+                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -489,6 +538,7 @@
         <image name="feed_tab" width="25" height="25"/>
         <image name="image_placeholder" width="375" height="375"/>
         <image name="insta_camera_btn" width="25" height="25"/>
+        <image name="person.crop.circle.fill" catalog="system" width="64" height="60"/>
         <image name="profile_tab" width="25" height="25"/>
         <image name="submit-btn" width="25" height="25"/>
         <image name="trash" catalog="system" width="60" height="64"/>
