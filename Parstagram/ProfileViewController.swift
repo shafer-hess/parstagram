@@ -12,16 +12,14 @@ import UIKit
 class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, DeleteDelegate {
     // ProfileViewController Outlets
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var tableHeaderView: UIView!
-    @IBOutlet weak var usernameLabel: UILabel!
         
     var posts = [PFObject]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        tableView.allowsSelection = false
         tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
-        tableView.tableHeaderView = self.tableHeaderView
         
         tableView.estimatedRowHeight = 475
         tableView.rowHeight = UITableView.automaticDimension

@@ -24,7 +24,8 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
+        tableView.allowsSelection = false
+        tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         
         tableView.estimatedRowHeight = 475
         tableView.rowHeight = UITableView.automaticDimension
@@ -128,12 +129,10 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     /*
     // MARK: - Navigation
-
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
     }
     */
-
 }
