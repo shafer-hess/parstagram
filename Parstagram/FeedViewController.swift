@@ -10,10 +10,15 @@ import AlamofireImage
 import Parse
 import UIKit
 
-class FeedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+protocol DeleteDelegate: class {
+    func deletePost(objectId: String)
+}
+
+class FeedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, DeleteDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
+    let myRefreshController = UIRefreshControl()
     var posts = [PFObject]()
     
     override func viewDidLoad() {
@@ -24,19 +29,31 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
 
         tableView.delegate = self
         tableView.dataSource = self
+        
+        myRefreshController.addTarget(self, action: #selector(getPosts), for: .valueChanged)
+        self.tableView.refreshControl = myRefreshController
+        
+        getPosts()
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+        getPosts()
+        self.tableView.reloadData()
+    }
+    
+    @objc func getPosts() {
         let query = PFQuery(className: "Posts")
         query.includeKey("author")
+        query.order(byDescending: "createdAt")
         query.limit = 20
         
         query.findObjectsInBackground { (posts, error) in
             if(posts != nil) {
                 self.posts = posts!
                 self.tableView.reloadData()
+                self.myRefreshController.endRefreshing()
             }
         }
     }
@@ -54,11 +71,19 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         let urlString = imageFile.url!
         let url = URL(string: urlString)!
         
+        // Configure Cell with Data
+        cell.deleteDelegate = self
         cell.authorLabel.text = user.username
         cell.commentLabel.text = post["caption"] as? String
         cell.postView.af_setImage(withURL: url)
+        cell.objectId = post.objectId!
         
-        cell.objectId = post["objectId"] as! String
+        // Check if we can display delete button on post
+        if(user.username == PFUser.current()?.username) {
+            cell.deleteButton.isHidden = false
+        } else {
+            cell.deleteButton.isHidden = true
+        }
         
         return cell
     }
@@ -67,6 +92,36 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         PFUser.logOut()
         self.dismiss(animated: true, completion: nil)
         UserDefaults.standard.set(false, forKey: "userLoggedIn")
+    }
+    
+    func deletePost(objectId: String) {
+        // Confirm Post Delete Alert UI
+        let postDelete = UIAlertController(title: "Are you sure?", message: "Are you sure you want to remove this post? This action cannot be undone.", preferredStyle: .alert)
+        let cancelButton = UIAlertAction(title: "Cancel", style: .cancel) { (action) in }
+        let confirmButton = UIAlertAction(title: "Yes", style: .default) { (action) in
+            
+            let query = PFQuery(className: "Posts")
+            query.whereKey("objectId", equalTo: objectId)
+
+            query.findObjectsInBackground { (posts: [PFObject]?, error) in
+                
+                for post in posts! {
+                    post.deleteInBackground { (success, error) in
+                        if(success) {
+                            self.getPosts()
+                            self.tableView.reloadData()
+                        } else {
+                            print("Error: \(error?.localizedDescription ?? "error")")
+                        }
+                    }
+                }
+            }
+        }
+        
+        postDelete.addAction(cancelButton)
+        postDelete.addAction(confirmButton)
+        
+        present(postDelete, animated: true)
     }
     
     /*

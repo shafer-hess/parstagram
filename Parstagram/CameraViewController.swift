@@ -16,7 +16,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var commentField: UITextField!
     @IBOutlet weak var submitButton: UIButton!
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -86,6 +86,11 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     @IBAction func onTapBackground(_ sender: Any) {
         view.endEditing(true)
     }
+    
+    @IBAction func onCancel(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+    }
+    
     
     /*
     // MARK: - Navigation
