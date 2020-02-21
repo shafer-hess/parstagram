@@ -1,30 +1,27 @@
 //
-//  FeedViewController.swift
+//  ProfileViewController.swift
 //  Parstagram
 //
-//  Created by Shafer Hess on 2/17/20.
+//  Created by Shafer Hess on 2/20/20.
 //  Copyright © 2020 Shafer Hess. All rights reserved.
 //
 
-import AlamofireImage
 import Parse
 import UIKit
 
-protocol DeleteDelegate: class {
-    func deletePost(objectId: String)
-}
-
-class FeedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, DeleteDelegate {
-
+class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, DeleteDelegate {
+    // ProfileViewController Outlets
     @IBOutlet weak var tableView: UITableView!
-    
-    let myRefreshController = UIRefreshControl()
+    @IBOutlet weak var tableHeaderView: UIView!
+    @IBOutlet weak var usernameLabel: UILabel!
+        
     var posts = [PFObject]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
+
+        tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
+        tableView.tableHeaderView = self.tableHeaderView
         
         tableView.estimatedRowHeight = 475
         tableView.rowHeight = UITableView.automaticDimension
@@ -32,32 +29,11 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.delegate = self
         tableView.dataSource = self
         
-        myRefreshController.addTarget(self, action: #selector(getPosts), for: .valueChanged)
-        self.tableView.refreshControl = myRefreshController
-        
-        getPosts()
-        
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        getPosts()
-        self.tableView.reloadData()
-    }
-    
-    @objc func getPosts() {
-        let query = PFQuery(className: "Posts")
-        query.includeKey("author")
-        query.order(byDescending: "createdAt")
-        query.limit = 20
-        
-        query.findObjectsInBackground { (posts, error) in
-            if(posts != nil) {
-                self.posts = posts!
-                self.tableView.reloadData()
-                self.myRefreshController.endRefreshing()
-            }
+        if(PFUser.current() != nil) {
+            self.navigationItem.title = PFUser.current()?.username
         }
+        
+        getUserPosts()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -65,21 +41,21 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell") as! PostCell
+        
         let post = posts[indexPath.row]
         let user = post["author"] as! PFUser
         let imageFile = post["image"] as! PFFileObject
         let urlString = imageFile.url!
         let url = URL(string: urlString)!
-        
+
         // Configure Cell with Data
         cell.deleteDelegate = self
         cell.authorLabel.text = user.username
         cell.commentLabel.text = post["caption"] as? String
         cell.postView.af_setImage(withURL: url)
         cell.objectId = post.objectId!
-        
+
         // Check if we can display delete button on post
         if(user.username == PFUser.current()?.username) {
             cell.deleteButton.isHidden = false
@@ -90,10 +66,25 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         return cell
     }
     
-    @IBAction func onLogout(_ sender: Any) {
-        PFUser.logOut()
-        self.dismiss(animated: true, completion: nil)
-        UserDefaults.standard.set(false, forKey: "userLoggedIn")
+    func getUserPosts() {
+        // Get Current User's ID
+        let user = PFUser.current()
+        
+        // Retrieve
+        let query = PFQuery(className: "Posts")
+        query.includeKey("author")
+        query.whereKey("author", equalTo: user as Any)
+        query.order(byDescending: "createdAt")
+        query.limit = 20
+        
+        query.findObjectsInBackground { (posts, error) in
+            if(posts != nil) {
+                self.posts = posts!
+                self.tableView.reloadData()
+            } else {
+                print("Error: \(error?.localizedDescription ?? "error")")
+            }
+        }
     }
     
     func deletePost(objectId: String) {
@@ -110,7 +101,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
                 for post in posts! {
                     post.deleteInBackground { (success, error) in
                         if(success) {
-                            self.getPosts()
+                            self.getUserPosts()
                             self.tableView.reloadData()
                         } else {
                             print("Error: \(error?.localizedDescription ?? "error")")
