@@ -33,6 +33,14 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         // Replace with label and Profile Picture URL
         if(PFUser.current() != nil) {
+            // Get Profile Picture
+            let user = PFUser.current()!
+            let imageFile = user["profile_picture"] as! PFFileObject
+            let urlString = imageFile.url!
+            let url = URL(string: urlString)!
+            
+            // Set Custom User Fields
+            profileView.af_setImage(withURL: url)
             usernameLabel.text = PFUser.current()!.username
         }
         
@@ -140,8 +148,21 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         profileView.image = scaledImage
         
-        // TODO
-        // Upload Image to Parse
+        // Retrieve User and ImageData
+        let user = PFUser.current()!
+        let imageData = profileView.image!.pngData()
+        let file = PFFileObject(name: "profile.png", data: imageData!)
+        
+        user["profile_picture"] = file
+        
+        // Upload Profile Picture to Parse
+        user.saveInBackground(block: { (success, error) in
+            if(success) {
+                print("Profile Picture Saved")
+            } else {
+                print("Error: \(error?.localizedDescription ?? "error")")
+            }
+        })
         
         dismiss(animated: true, completion: nil)
         
