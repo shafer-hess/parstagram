@@ -53,6 +53,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         query.order(byDescending: "createdAt")
         query.limit = numPosts
         
+        self.posts.removeAll()
         query.findObjectsInBackground { (posts, error) in
             if(posts != nil) {
                 self.posts = posts!
@@ -95,8 +96,10 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
             let profilePictureUrl = URL(string: profilePictureUrlString)!
             
             cell.profilePictureView.af_setImage(withURL: profilePictureUrl)
+        } else {
+            cell.profilePictureView.image = UIImage(systemName: "person.crop.circle.fill")
         }
-        
+
         // Check if we can display delete button on post
         if(user.username == PFUser.current()?.username) {
             cell.deleteButton.isHidden = false

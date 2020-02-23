@@ -17,10 +17,15 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var profileView: UIImageView!
     
+    let myRefreshController = UIRefreshControl()
+    
     var posts = [PFObject]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        myRefreshController.addTarget(self, action: #selector(getUserPosts), for: .valueChanged)
+        self.tableView.refreshControl = myRefreshController
         
         tableView.allowsSelection = false
         tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
@@ -35,12 +40,15 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         if(PFUser.current() != nil) {
             // Get Profile Picture
             let user = PFUser.current()!
-            let imageFile = user["profile_picture"] as! PFFileObject
-            let urlString = imageFile.url!
-            let url = URL(string: urlString)!
+            let image = user["profile_picture"] as? PFFileObject
+            
+            if let imageFile = image {
+                let urlString = (imageFile.url!)
+                let url = URL(string: urlString)!
+                profileView.af_setImage(withURL: url)
+            }
             
             // Set Custom User Fields
-            profileView.af_setImage(withURL: url)
             usernameLabel.text = PFUser.current()!.username
         }
         
@@ -77,7 +85,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         return cell
     }
     
-    func getUserPosts() {
+    @objc func getUserPosts() {
         // Get Current User's ID
         let user = PFUser.current()
         
@@ -91,6 +99,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         query.findObjectsInBackground { (posts, error) in
             if(posts != nil) {
                 self.posts = posts!
+                self.myRefreshController.endRefreshing()
                 self.tableView.reloadData()
             } else {
                 print("Error: \(error?.localizedDescription ?? "error")")
