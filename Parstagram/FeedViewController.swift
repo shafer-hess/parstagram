@@ -87,6 +87,16 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.postView.af_setImage(withURL: url)
         cell.objectId = post.objectId!
         
+        // Check if User has Profile Picture
+        let profilePictureImage = user["profile_picture"] as? PFFileObject
+
+        if let profilePicture = profilePictureImage {
+            let profilePictureUrlString = profilePicture.url!
+            let profilePictureUrl = URL(string: profilePictureUrlString)!
+            
+            cell.profilePictureView.af_setImage(withURL: profilePictureUrl)
+        }
+        
         // Check if we can display delete button on post
         if(user.username == PFUser.current()?.username) {
             cell.deleteButton.isHidden = false

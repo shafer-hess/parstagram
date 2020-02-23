@@ -12,6 +12,7 @@ import UIKit
 class PostCell: UITableViewCell {
     
     // Cell Outlets
+    @IBOutlet weak var profilePictureView: UIImageView!
     @IBOutlet weak var authorLabel: UILabel!
     @IBOutlet weak var commentLabel: UILabel!
     @IBOutlet weak var deleteButton: UIButton!

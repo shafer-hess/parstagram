@@ -182,6 +182,7 @@
                                             <outlet property="commentLabel" destination="5iW-Aw-0nA" id="7nO-bO-qfD"/>
                                             <outlet property="deleteButton" destination="Dj8-yw-Hfd" id="T4w-9Q-rUr"/>
                                             <outlet property="postView" destination="p9Y-Ff-nsb" id="JmT-wA-hJN"/>
+                                            <outlet property="profilePictureView" destination="x38-po-yeb" id="hjA-G2-pjC"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
