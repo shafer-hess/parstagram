@@ -111,9 +111,9 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Author" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sqZ-Oh-wBR">
-                                                    <rect key="frame" x="15.000000000000004" y="11" width="56.333333333333343" height="21"/>
+                                                    <rect key="frame" x="47" y="11" width="56.333333333333343" height="21"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="21" id="zxC-3u-WgU"/>
+                                                        <constraint firstAttribute="height" constant="21" id="hI8-uK-XRM"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -147,17 +147,34 @@
                                                         <action selector="onDelete:" destination="SoB-dr-tar" eventType="touchUpInside" id="oQh-DW-XZo"/>
                                                     </connections>
                                                 </button>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.crop.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="x38-po-yeb">
+                                                    <rect key="frame" x="15" y="9.9999999999999982" width="25" height="23.666666666666664"/>
+                                                    <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="25" id="NEs-JI-ZdD"/>
+                                                        <constraint firstAttribute="height" constant="25" id="f56-aF-GhD"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <real key="value" value="12.5"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </imageView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="5iW-Aw-0nA" firstAttribute="top" secondItem="p9Y-Ff-nsb" secondAttribute="bottom" constant="15" id="1Al-aO-0ZB"/>
                                                 <constraint firstItem="Dj8-yw-Hfd" firstAttribute="top" secondItem="IEM-lf-ACa" secondAttribute="topMargin" id="A9D-jG-NJ3"/>
+                                                <constraint firstItem="sqZ-Oh-wBR" firstAttribute="top" secondItem="IEM-lf-ACa" secondAttribute="topMargin" id="ESb-Lk-nqH"/>
                                                 <constraint firstItem="Dj8-yw-Hfd" firstAttribute="leading" secondItem="IEM-lf-ACa" secondAttribute="leadingMargin" constant="309" id="Fzh-TO-Wke"/>
-                                                <constraint firstItem="sqZ-Oh-wBR" firstAttribute="top" secondItem="IEM-lf-ACa" secondAttribute="topMargin" id="IW5-Tj-COA"/>
-                                                <constraint firstItem="p9Y-Ff-nsb" firstAttribute="leading" secondItem="sqZ-Oh-wBR" secondAttribute="leading" id="J7w-uC-clV"/>
+                                                <constraint firstItem="p9Y-Ff-nsb" firstAttribute="top" secondItem="x38-po-yeb" secondAttribute="bottom" constant="6" id="IgA-Ts-YHk"/>
                                                 <constraint firstItem="5iW-Aw-0nA" firstAttribute="leading" secondItem="IEM-lf-ACa" secondAttribute="leadingMargin" id="JRu-rF-c10"/>
+                                                <constraint firstItem="sqZ-Oh-wBR" firstAttribute="leading" secondItem="x38-po-yeb" secondAttribute="trailing" constant="7" id="JeW-FV-efo"/>
+                                                <constraint firstItem="x38-po-yeb" firstAttribute="leading" secondItem="IEM-lf-ACa" secondAttribute="leading" constant="15" id="dCk-v0-tuy"/>
+                                                <constraint firstItem="p9Y-Ff-nsb" firstAttribute="top" secondItem="sqZ-Oh-wBR" secondAttribute="bottom" constant="8" id="nep-zW-IJi"/>
                                                 <constraint firstItem="p9Y-Ff-nsb" firstAttribute="top" secondItem="Dj8-yw-Hfd" secondAttribute="bottom" constant="7" id="qBA-DE-9LH"/>
-                                                <constraint firstItem="sqZ-Oh-wBR" firstAttribute="leading" secondItem="IEM-lf-ACa" secondAttribute="leadingMargin" id="u2B-l6-Phb"/>
+                                                <constraint firstItem="p9Y-Ff-nsb" firstAttribute="leading" secondItem="x38-po-yeb" secondAttribute="leading" id="s5K-NB-oRE"/>
                                                 <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="5iW-Aw-0nA" secondAttribute="bottom" constant="53.670000000000002" id="x4V-dM-Nfg"/>
+                                                <constraint firstItem="x38-po-yeb" firstAttribute="top" secondItem="IEM-lf-ACa" secondAttribute="top" constant="9" id="zui-f0-glJ"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -192,7 +209,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tLW-6T-3Sh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3004" y="-274"/>
+            <point key="canvasLocation" x="3004" y="-274.13793103448279"/>
         </scene>
         <!--Camera-->
         <scene sceneID="7Bf-uX-tzk">
@@ -339,7 +356,6 @@
         <!--Profile View Controller-->
         <scene sceneID="gu6-zy-A5y">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="VAR-p0-5Wx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <viewController id="FAg-3B-Sfd" customClass="ProfileViewController" customModule="Parstagram" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="xTo-25-oKb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
@@ -469,6 +485,7 @@
                         <outlet property="usernameLabel" destination="hhG-rf-9ic" id="0n7-ky-6le"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VAR-p0-5Wx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="Ojo-Ds-ckp">
                     <connections>
                         <action selector="onProfileTap:" destination="FAg-3B-Sfd" id="RD4-Qv-PZh"/>
@@ -480,7 +497,6 @@
         <!--Tab Bar Controller-->
         <scene sceneID="zMT-Jk-pgt">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="tO9-US-N72" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <tabBarController id="5BN-1D-lQh" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Ysg-HR-fpW">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
@@ -492,6 +508,7 @@
                         <segue destination="RN4-fN-7CD" kind="relationship" relationship="viewControllers" id="HnO-Y4-Igy"/>
                     </connections>
                 </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tO9-US-N72" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1084" y="129"/>
         </scene>
