@@ -6,9 +6,10 @@
 //  Copyright © 2020 Shafer Hess. All rights reserved.
 //
 
-import UIKit
 import AlamofireImage
+import MBProgressHUD
 import Parse
+import UIKit
 
 class CameraViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 

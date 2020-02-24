@@ -7,6 +7,7 @@
 //
 
 import AlamofireImage
+import MBProgressHUD
 import Parse
 import UIKit
 
