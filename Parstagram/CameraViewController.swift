@@ -17,13 +17,17 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var commentField: UITextField!
     @IBOutlet weak var submitButton: UIButton!
-        
+    @IBOutlet weak var submitView: UIView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.submitButton.isEnabled = false
+        submitView.isUserInteractionEnabled = false
+        submitView.backgroundColor = .lightGray
         // Do any additional setup after loading the view.
     }
-    
+
     @IBAction func onSubmit(_ sender: Any) {
         
         // Disable submit button
@@ -42,13 +46,16 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
         post["image"] = file
         
         // Save Post to Parse Database
+        MBProgressHUD.showAdded(to: self.view, animated: true)
         post.saveInBackground { (success, error) in
             if(success) {
                 // Dismiss CameraViewController
+                MBProgressHUD.hide(for: self.view, animated: true)
                 self.dismiss(animated: true, completion: nil)
                 
             } else {
                 self.submitButton.isEnabled = true
+                MBProgressHUD.hide(for: self.view, animated: true)
                 print("Error uploading post: \(error?.localizedDescription ?? "Error Uploading")")
             }
         }
@@ -81,6 +88,9 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
         // Resize ImageView to match 300x300 image
         imageView.frame = CGRect(x: imageView.frame.midX - imageView.frame.height / 2, y: imageView.frame.midY - imageView.frame.height / 2, width: imageView.frame.height, height: imageView.frame.height)
         
+        self.submitButton.isEnabled = true
+        self.submitView.isUserInteractionEnabled = true
+        self.submitView.backgroundColor = .white
         dismiss(animated: true, completion: nil)
     }
     

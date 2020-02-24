@@ -6,6 +6,7 @@
 //  Copyright © 2020 Shafer Hess. All rights reserved.
 //
 
+import MBProgressHUD
 import UIKit
 import Parse
 
@@ -46,10 +47,13 @@ class LoginViewController: UIViewController {
         user.username = usernameField.text
         user.password = passwordField.text
         
+        MBProgressHUD.showAdded(to: self.view, animated: true)
         user.signUpInBackground { (success, error) in
             if(success) {
+                MBProgressHUD.hide(for: self.view, animated: true)
                 self.performSegue(withIdentifier: "loginSegue", sender: nil)
             } else {
+                MBProgressHUD.hide(for: self.view, animated: true)
                 print("Error: \(error?.localizedDescription ?? "Error Detected")")
             }
         }
