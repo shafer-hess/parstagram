@@ -89,6 +89,12 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.postView.af_setImage(withURL: url)
         cell.objectId = post.objectId!
         
+        if(!cell.commentLabel.text!.isEmpty) {
+            cell.commentAuthorLabel.text = user.username
+        } else {
+            cell.commentAuthorLabel.text = ""
+        }
+        
         // Check if User has Profile Picture
         let profilePictureImage = user["profile_picture"] as? PFFileObject
 

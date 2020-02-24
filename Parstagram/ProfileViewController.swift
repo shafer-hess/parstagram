@@ -75,6 +75,12 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         cell.commentLabel.text = post["caption"] as? String
         cell.postView.af_setImage(withURL: url)
         cell.objectId = post.objectId!
+        
+        if(!cell.commentLabel.text!.isEmpty) {
+            cell.commentAuthorLabel.text = user.username
+        } else {
+            cell.commentAuthorLabel.text = ""
+        }
 
         // Check if we can display delete button on post
         if(user.username == PFUser.current()?.username) {

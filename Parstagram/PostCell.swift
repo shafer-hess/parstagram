@@ -15,6 +15,7 @@ class PostCell: UITableViewCell {
     @IBOutlet weak var profilePictureView: UIImageView!
     @IBOutlet weak var authorLabel: UILabel!
     @IBOutlet weak var commentLabel: UILabel!
+    @IBOutlet weak var commentAuthorLabel: UILabel!
     @IBOutlet weak var deleteButton: UIButton!
     @IBOutlet weak var postView: UIImageView!
     
