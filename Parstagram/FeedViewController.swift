@@ -49,7 +49,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Add Comment
-        let post = posts[indexPath.row]
+        let post = posts[indexPath.section]
         
         let comment = PFObject(className: "Comments")
         comment["text"] = "This is a random comment"
@@ -69,7 +69,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     @objc func getPosts() {
         let query = PFQuery(className: "Posts")
-        query.includeKey("author")
+        query.includeKeys(["author", "comments", "comments.author"])
         query.order(byDescending: "createdAt")
         query.limit = numPosts
         
@@ -88,52 +88,72 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         getPosts()
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return posts.count
     }
     
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let post = posts[section]
+        let comments = (post["comments"] as? [PFObject]) ?? []
+        
+        return comments.count + 1
+    }
+        
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell") as! PostCell
-        let post = posts[indexPath.row]
-        let user = post["author"] as! PFUser
-        let imageFile = post["image"] as! PFFileObject
-        let urlString = imageFile.url!
-        let url = URL(string: urlString)!
+        let post = posts[indexPath.section]
+        let comments = (post["comments"] as? [PFObject]) ?? []
         
-        // Configure Cell with Data
-        cell.deleteDelegate = self
-        cell.authorLabel.text = user.username
-        cell.commentLabel.text = post["caption"] as? String
-        cell.postView.af_setImage(withURL: url)
-        cell.objectId = post.objectId!
-        
-        if(!cell.commentLabel.text!.isEmpty) {
-            cell.commentAuthorLabel.text = user.username
-        } else {
-            cell.commentAuthorLabel.text = ""
-        }
-        
-        // Check if User has Profile Picture
-        let profilePictureImage = user["profile_picture"] as? PFFileObject
-
-        if let profilePicture = profilePictureImage {
-            let profilePictureUrlString = profilePicture.url!
-            let profilePictureUrl = URL(string: profilePictureUrlString)!
+        if(indexPath.row == 0) {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell") as! PostCell
+            let user = post["author"] as! PFUser
+            let imageFile = post["image"] as! PFFileObject
+            let urlString = imageFile.url!
+            let url = URL(string: urlString)!
             
-            cell.profilePictureView.af_setImage(withURL: profilePictureUrl)
-        } else {
-            cell.profilePictureView.image = UIImage(systemName: "person.crop.circle.fill")
-        }
+            // Configure Cell with Data
+            cell.deleteDelegate = self
+            cell.authorLabel.text = user.username
+            cell.commentLabel.text = post["caption"] as? String
+            cell.postView.af_setImage(withURL: url)
+            cell.objectId = post.objectId!
+            
+            if(!cell.commentLabel.text!.isEmpty) {
+                cell.commentAuthorLabel.text = user.username
+            } else {
+                cell.commentAuthorLabel.text = ""
+            }
+            
+            // Check if User has Profile Picture
+            let profilePictureImage = user["profile_picture"] as? PFFileObject
 
-        // Check if we can display delete button on post
-        if(user.username == PFUser.current()?.username) {
-            cell.deleteButton.isHidden = false
+            if let profilePicture = profilePictureImage {
+                let profilePictureUrlString = profilePicture.url!
+                let profilePictureUrl = URL(string: profilePictureUrlString)!
+                
+                cell.profilePictureView.af_setImage(withURL: profilePictureUrl)
+            } else {
+                cell.profilePictureView.image = UIImage(systemName: "person.crop.circle.fill")
+            }
+
+            // Check if we can display delete button on post
+            if(user.username == PFUser.current()?.username) {
+                cell.deleteButton.isHidden = false
+            } else {
+                cell.deleteButton.isHidden = true
+            }
+            
+            return cell
         } else {
-            cell.deleteButton.isHidden = true
+            let cell = tableView.dequeueReusableCell(withIdentifier: "CommentCell") as! CommentCell
+            let comment = comments[indexPath.row - 1]
+            let user = comment["author"] as! PFUser
+            
+            cell.usernameLabel.text = user.username
+            cell.commentLabel.text = comment["text"] as? String
+            
+            return cell
         }
-        
-        return cell
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
