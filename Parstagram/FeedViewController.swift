@@ -26,7 +26,6 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.allowsSelection = false
         tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         
         tableView.estimatedRowHeight = 475
@@ -46,6 +45,26 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewDidAppear(animated)
         getPosts()
         self.tableView.reloadData()
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Add Comment
+        let post = posts[indexPath.row]
+        
+        let comment = PFObject(className: "Comments")
+        comment["text"] = "This is a random comment"
+        comment["author"] = PFUser.current()!
+        comment["post"] = post
+        
+        post.add(comment, forKey: "comments")
+        
+        post.saveInBackground { (success, error) in
+            if(success) {
+                print("Comment Saved")
+            } else {
+                print("Error: \(error?.localizedDescription ?? "error")")
+            }
+        }
     }
     
     @objc func getPosts() {
