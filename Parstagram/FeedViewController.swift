@@ -152,6 +152,17 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
             cell.usernameLabel.text = user.username
             cell.commentLabel.text = comment["text"] as? String
             
+            let profilePictureImage = user["profile_picture"] as? PFFileObject
+
+            if let profilePicture = profilePictureImage {
+                let profilePictureUrlString = profilePicture.url!
+                let profilePictureUrl = URL(string: profilePictureUrlString)!
+                
+                cell.profileImageView.af_setImage(withURL: profilePictureUrl)
+            } else {
+                cell.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")
+            }
+            
             return cell
         }
     }
