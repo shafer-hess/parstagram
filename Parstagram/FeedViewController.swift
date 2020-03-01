@@ -16,29 +16,45 @@ protocol DeleteDelegate: class {
     func deletePost(objectId: String)
 }
 
-class FeedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, DeleteDelegate {
+class FeedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, DeleteDelegate, MessageInputBarDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
     let commentBar = MessageInputBar()
-    
     let myRefreshController = UIRefreshControl()
+    
     var posts = [PFObject]()
     var numPosts: Int = 5
+    var showsCommentBar = false
+    var selectedPost: PFObject!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let center = NotificationCenter.default
+        center.addObserver(self, selector: #selector(keyboardWillBeHidden(note:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         
         tableView.estimatedRowHeight = 475
         tableView.rowHeight = UITableView.automaticDimension
-
+        tableView.keyboardDismissMode = .interactive
+        
         tableView.delegate = self
         tableView.dataSource = self
         
         myRefreshController.addTarget(self, action: #selector(getPosts), for: .valueChanged)
         self.tableView.refreshControl = myRefreshController
+        
+        commentBar.inputTextView.placeholder = "Add a Comment ..."
+        commentBar.sendButton.title = "Post"
+        commentBar.delegate = self
+        
+        if #available(iOS 13.0, *) {
+            commentBar.inputTextView.textColor = .label
+            commentBar.inputTextView.placeholderLabel.textColor = .secondaryLabel
+            commentBar.backgroundView.backgroundColor = .systemBackground
+        }
         
         getPosts()
         
@@ -49,24 +65,60 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         getPosts()
         self.tableView.reloadData()
     }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // Add Comment
-        let post = posts[indexPath.section]
         
+    override var inputAccessoryView: UIView? {
+        return commentBar
+    }
+    
+    override var canBecomeFirstResponder: Bool {
+        return showsCommentBar
+    }
+    
+    @objc func keyboardWillBeHidden(note: Notification) {
+        commentBar.inputTextView.text = nil
+        showsCommentBar = false
+        becomeFirstResponder()
+    }
+    
+    func messageInputBar(_ inputBar: MessageInputBar, didPressSendButtonWith text: String) {
+        // Create Comment
         let comment = PFObject(className: "Comments")
-        comment["text"] = "This is a random comment"
+        let post = selectedPost!
+        
+        comment["text"] = text
         comment["author"] = PFUser.current()!
         comment["post"] = post
-        
+
         post.add(comment, forKey: "comments")
-        
+
         post.saveInBackground { (success, error) in
             if(success) {
                 print("Comment Saved")
             } else {
                 print("Error: \(error?.localizedDescription ?? "error")")
             }
+        }
+        
+        tableView.reloadData()
+        
+        // Clear and dismiss commentBar
+        commentBar.inputTextView.text = nil
+        showsCommentBar = false
+        becomeFirstResponder()
+        commentBar.inputTextView.resignFirstResponder()
+    }
+        
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Add Comment
+        let post = posts[indexPath.section]
+        let comments = post["comments"] as? [PFObject] ?? []
+        
+        if(indexPath.row == comments.count + 1) {
+            showsCommentBar = true
+            becomeFirstResponder()
+            commentBar.inputTextView.becomeFirstResponder()
+            
+            selectedPost = post
         }
     }
     
@@ -99,7 +151,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         let post = posts[section]
         let comments = (post["comments"] as? [PFObject]) ?? []
         
-        return comments.count + 1
+        return comments.count + 2
     }
         
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -147,7 +199,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
             
             return cell
-        } else {
+        } else if (indexPath.row <= comments.count) {
             let cell = tableView.dequeueReusableCell(withIdentifier: "CommentCell") as! CommentCell
             let comment = comments[indexPath.row - 1]
             let user = comment["author"] as! PFUser
@@ -167,11 +219,14 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
             
             return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "AddCommentCell")!
+            return cell
         }
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if(indexPath.row + 1 == numPosts) {
+        if(indexPath.section + 1 == numPosts) {
             getMorePosts()
         }
     }
