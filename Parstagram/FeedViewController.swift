@@ -7,6 +7,7 @@
 //
 
 import AlamofireImage
+import MessageInputBar
 import MBProgressHUD
 import Parse
 import UIKit
@@ -18,6 +19,8 @@ protocol DeleteDelegate: class {
 class FeedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, DeleteDelegate {
 
     @IBOutlet weak var tableView: UITableView!
+    
+    let commentBar = MessageInputBar()
     
     let myRefreshController = UIRefreshControl()
     var posts = [PFObject]()
